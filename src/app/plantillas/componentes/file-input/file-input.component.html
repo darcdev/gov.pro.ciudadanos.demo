@@ -1,0 +1,48 @@
+<div class="file-input-container" [ngClass]="error ? 'file-error' : ''">
+  <div class="info_cargue" (click)="fileInput.click()" *ngIf="!fileData">
+    <img src="/assets/images/archivo.svg" />
+    <p>Tipo de archivo permitidos</p>
+    <p>{{ tiposDatosPermitidosTexto }}</p>
+    <p *ngIf="pesoPermitido !== 0">Peso máximo permitido {{ convertSize() }}</p>
+    <p *ngIf="dimensionesPermitidasAncho !== 0">
+      Validaciones dimensión de
+      {{ dimensionesPermitidasAncho }} * {{ dimensionesPermitidasAlto }}
+    </p>
+
+    <p class="error k-text-error" *ngIf="errorMessage">
+      Error: <br />
+      {{ errorMessage }}
+    </p>
+  </div>
+  <div class="info_preview" *ngIf="fileData">
+    <img *ngIf="fileData" [src]="fileData" />
+    <p *ngIf="sizeFileData">
+      {{ nameFileData }} ( {{ convertSizeFunction(sizeFileData, 2) }} )
+    </p>
+    <a *ngIf="downloadUrl" href="{{ downloadUrl }}" target="_blank">
+      Ver Archivo</a
+    >
+
+    <div class="k-form-buttons">
+      <button
+        class="btn btn-round btn-high boton-inicio"
+        icon="trash"
+        themeColor="primary"
+        (click)="clearFileInput()"
+        *ngIf="!readonly"
+        style="
+          width: auto;
+          padding-right: 30px;
+          padding-left: 30px;
+          padding-top: 7px;
+          padding-bottom: 7px;
+          margin-right: 23px;
+        "
+      >
+        Eliminar Archivo
+      </button>
+    </div>
+  </div>
+
+  <input type="file" #fileInput (change)="onFileChange($event)" />
+</div>

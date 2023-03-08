@@ -1,0 +1,208 @@
+<app-miga-pan></app-miga-pan>
+<app-etapas></app-etapas>
+<h2 class="pb-3">
+  {{ NOMBRE_TRAMITE }}
+</h2>
+<h3 class="pb-1">Radicar trámite</h3>
+<p class="pb-2">
+  A través de la siguiente funcionalidad, podrá radicar su trámite:
+</p>
+
+<div class="subtitulo">
+  <p>*Campos obligatorios</p>
+</div>
+<form [formGroup]="formGroup">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group govco">
+        <label for="input-simple-govco">Tipo de identificación*</label>
+        <select
+          name="tipodocumento"
+          title="Ej: Cédula de ciudadanía"
+          data-live-search="true"
+          formControlName="tipo_documento"
+        >
+          <option value="ti">Tarjeta de identidad</option>
+          <option value="cc">Cédula</option>
+          <option value="nit">Nit</option>
+        </select>
+        <div
+          *ngIf="
+            formGroup.get('tipo_documento')?.invalid &&
+            formGroup.get('tipo_documento')?.touched
+          "
+          class="text-danger"
+        >
+          Tipo de identificación es requerido
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group govco">
+        <label for="input-simple-govco">Número de identificación*</label>
+        <input
+          name=""
+          type="text"
+          maxlength="40"
+          placeholder="Ej: 102039049"
+          formControlName="numero_identificacion"
+        />
+        <div
+          *ngIf="
+            formGroup.get('numero_identificacion')?.invalid &&
+            formGroup.get('numero_identificacion')?.touched
+          "
+          class="text-danger"
+        >
+          Número de identificación es requerido.
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group govco">
+        <label for="input-simple-govco">Nombre*</label>
+        <input
+          name=""
+          type="text"
+          maxlength="40"
+          placeholder="Ej: "
+          formControlName="nombre"
+        />
+        <div
+          *ngIf="
+            formGroup.get('nombre')?.invalid && formGroup.get('nombre')?.touched
+          "
+          class="text-danger"
+        >
+          Nombre es requerido.
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group govco">
+        <label for="input-simple-govco">Apellido*</label>
+        <input
+          name=""
+          type="text"
+          maxlength="40"
+          placeholder="Ej: "
+          formControlName="apellido"
+        />
+        <div
+          *ngIf="
+            formGroup.get('apellido')?.invalid &&
+            formGroup.get('apellido')?.touched
+          "
+          class="text-danger"
+        >
+          Apellido es requerido.
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group govco">
+        <label for="input-simple-govco">Tipo de licencia*</label>
+        <select
+          name="tipo_licencia"
+          title="Ej:"
+          data-live-search="true"
+          formControlName="tipo_licencia"
+        >
+          <option value="1">Tipo 1</option>
+          <option value="2">Tipo 2</option>
+          <option value="3">Tipo 3</option>
+        </select>
+        <div
+          *ngIf="
+            formGroup.get('tipo_licencia')?.invalid &&
+            formGroup.get('tipo_licencia')?.touched
+          "
+          class="text-danger"
+        >
+          Tipo de licencia es requerido
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group govco">
+        <label for="input-simple-govco">Fecha de Solicitud*</label>
+        <input type="date" formControlName="fecha_solicitud" />
+        <div
+          *ngIf="
+            formGroup.get('fecha_solicitud')?.invalid &&
+            formGroup.get('fecha_solicitud')?.touched
+          "
+          class="text-danger"
+        >
+          Fecha de solicitud es requerido
+        </div>
+      </div>
+    </div>
+    <!-- Inicio campo Foto-->
+    <div class="col-md-12">
+      <div class="input-group mt-3 mb-3">
+        <label for="input-simple-govco">Formato de solicitud </label>
+        <!--En Bytes se envia el tamaño del archivo-->
+        <app-file-input
+          #archivoAdjuntoFoto
+          [pesoPermitido]="1048576"
+          [dimensionesPermitidasAncho]="0"
+          [dimensionesPermitidasAlto]="0"
+          [tiposDatosPermitidos]="[
+            'image/jpeg',
+            'image/jpg',
+            'application/pdf'
+          ]"
+          [tiposDatosPermitidosTexto]="'JPG,JPEG,PDF'"
+          [requerido]="false"
+          style="width: 100%"
+        ></app-file-input>
+      </div>
+    </div>
+    <!-- Fin campo Foto -->
+  </div>
+  <div class="row mt-5">
+    <div class="col-md-12">
+      <button
+        (click)="onSubmit()"
+        type="submit"
+        name=""
+        title="Clic, para registrar el tr&aacute;mite."
+        class="btn btn-round btn-high boton-inicio"
+        style="
+          width: auto;
+          padding-right: 60px;
+          padding-left: 60px;
+          padding-top: 9px;
+          padding-bottom: 9px;
+          margin-right: 23px;
+        "
+      >
+        Radicar
+      </button>
+    </div>
+  </div>
+</form>
+
+<img
+  src="https://c.tenor.com/tEBoZu1ISJ8AAAAC/spinning-loading.gif"
+  *ngIf="loading"
+/>
+
+<div class="respuesta mt-5 mb-4" *ngIf="resultado">
+  <h3>Registro éxitoso</h3>
+  <p>
+    Su trámite ha sido radicado éxitosamente estos son los datos del trámite
+    para poder hacer seguimiento del mismo:
+  </p>
+
+  <p><b>Número de radicado:</b> {{ estadoTramite }} <br /></p>
+  <p><b>Tiempo de respuesta:</b> 10 días hábiles <br /></p>
+</div>
+<div class="respuesta mt-5 mb-4" *ngIf="error">
+  <h3>Error:</h3>
+
+  <p>{{ estadoError }} <br /></p>
+</div>

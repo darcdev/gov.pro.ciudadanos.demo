@@ -1,0 +1,99 @@
+<app-miga-pan></app-miga-pan>
+<app-etapas [etapa]="etapa"></app-etapas>
+<h2 class="pb-3">
+  {{NOMBRE_TRAMITE}}
+</h2>  
+<h3 class="pb-1">Consultar Mis Trámites</h3>
+<p class="pb-2">
+  A través de la siguiente funcionalidad, consulte el estado de sus solicitudes
+  presentadas. La búsqueda la puede realizar diligenciando los campos dispuestos
+  continuación:
+</p>
+
+<div class="subtitulo">
+  <p>*Campos obligatorios</p>
+</div>
+<form [formGroup]="formGroup">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group govco">
+        <label for="input-simple-govco">Número de radicado*</label>
+        <input
+          id="numeroRadicado"
+          name=""
+          type="text"
+          maxlength="40"
+          placeholder="Ej: 102039049"
+          formControlName="numero_radicado"
+        />
+        <div
+          *ngIf="
+            formGroup.get('numero_radicado')?.invalid &&
+            formGroup.get('numero_radicado')?.touched
+          "
+          class="text-danger"
+        >
+          Número de radicado es requerido.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col-md-12">
+      <button
+        (click)="onSubmit()"
+        type="submit"
+        [disabled]="formGroup.invalid"
+        name=""
+        title="Clic, para registrar el tr&aacute;mite."
+        class="btn btn-round btn-high boton-inicio"
+        style="
+          width: auto;
+          padding-right: 60px;
+          padding-left: 60px;
+          padding-top: 9px;
+          padding-bottom: 9px;
+          margin-right: 23px;
+        "
+      >
+        Consultar
+      </button>
+
+      <button
+        (click)="resetForm()"
+        name=""
+        title="Clic, para registrar el tr&aacute;mite."
+        class="btn btn-round btn-high boton-inicio"
+        style="
+          width: auto;
+          padding-right: 60px;
+          padding-left: 60px;
+          padding-top: 9px;
+          padding-bottom: 9px;
+          margin-right: 23px;
+          background-color: white !important;
+          color: #3366cc;
+        "
+      >
+        Nueva consulta
+      </button>
+      
+    </div>
+  </div>
+</form>
+
+<img
+  src="https://c.tenor.com/tEBoZu1ISJ8AAAAC/spinning-loading.gif"
+  *ngIf="loading"
+/>
+
+<div class="respuesta mt-5 mb-4" *ngIf="resultado">
+  <h3>Respuesta trámite:</h3>
+
+  <p><b>Estado:</b> {{ estadoTramite }} <br /></p>
+  <a href="{{rutaPDF}}" target="_blank" *ngIf="rutaPDF">
+    <img  src="assets/images/pdf.png" height="90"/>
+    <p>VER</p>
+    </a>
+</div>
+

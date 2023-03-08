@@ -1,0 +1,23 @@
+  <nav class='pt-5' aria-label="Miga de pan, usted esta en:">
+    <ol class="breadcrumb ">
+      <li class="breadcrumb-item">
+        <a class="breadcrumb-text" href="/">Inicio</a>
+      </li>
+     <!--  <li class="breadcrumb-item active aria-current='page'">
+        <div class="image-icon">
+          <span class="breadcrumb govco-icon govco-icon-shortr-arrow"></span>
+          <p class="breadcrumb-text">{{NOMBRE_TRAMITE | cortarCaracteres }}</p>
+        </div>
+      </li> -->
+
+      <li class="breadcrumb-item active aria-current='page'" *ngIf="accion!=''">
+        <div class="image-icon">
+          <span class="breadcrumb govco-icon govco-icon-shortr-arrow"></span>
+          <p class="breadcrumb-text">{{ accion }}</p>
+        </div>
+      </li>
+
+
+    </ol>
+  </nav>
+  
