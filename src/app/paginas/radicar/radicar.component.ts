@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit} from '@angular/core';
 import { TramitesService } from 'src/app/services/tramites.services';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NOMBRE_TRAMITE } from 'src/app/constants';
+
 
 @Component({
   selector: 'app-radicar',
@@ -20,7 +20,9 @@ export class RadicarComponent implements OnInit {
   estadoError: string = '';
   usuarioTramite: string = '';
   formGroup: FormGroup;
+  files: any = [];
 
+  
   constructor(public httpService: TramitesService, private fb: FormBuilder) {
     this.formGroup = this.fb.group({
       tipo_documento: ['', [Validators.required]],
@@ -32,7 +34,24 @@ export class RadicarComponent implements OnInit {
     });
   }
 
+
+
   ngOnInit(): void {}
+
+//capure the file
+  FileDocument(event:any) {  
+      const file = event.target.files[0];
+      this.files.push(file);
+  }
+  FileRequest(event:any) {  
+    const file = event.target.files[0];
+    this.files.push(file);
+  }
+  FilePlan(event:any) {  
+    const file = event.target.files[0];
+    this.files.push(file);
+  }
+//end capture the file
 
   onSubmit() {
     if (this.formGroup.invalid) {
@@ -69,7 +88,7 @@ export class RadicarComponent implements OnInit {
       },
     };
 
-    this.loading = true;
+    this.loading = true;  
     this.httpService.guardarDatos(body).subscribe(
       (data) => {
         console.log(data);
@@ -78,6 +97,10 @@ export class RadicarComponent implements OnInit {
         this.resultado = true;
         this.loading = false;
         this.formGroup.reset();
+
+        this.httpService.guardarArchivo(this.files[0], this.estadoTramite, 'solicitud');
+        this.httpService.guardarArchivo(this.files[1], this.estadoTramite, 'documento');
+        this.httpService.guardarArchivo(this.files[2], this.estadoTramite, 'plan');
       },
       (error) => {
         console.log(error);
@@ -88,7 +111,9 @@ export class RadicarComponent implements OnInit {
         console.log(error);
         this.estadoError = 'Ocurrió un error:' + error?.message;
       }
-    );
+      );
+
+      
   }
 
   async getReportData() {}

@@ -140,28 +140,74 @@
         </div>
       </div>
     </div>
-    <!-- Inicio campo Foto-->
-    <div class="col-md-12">
-      <div class="input-group mt-3 mb-3">
-        <label for="input-simple-govco">Formato de solicitud </label>
-        <!--En Bytes se envia el tamaño del archivo-->
-        <app-file-input
-          #archivoAdjuntoFoto
-          [pesoPermitido]="1048576"
-          [dimensionesPermitidasAncho]="0"
-          [dimensionesPermitidasAlto]="0"
-          [tiposDatosPermitidos]="[
-            'image/jpeg',
-            'image/jpg',
-            'application/pdf'
-          ]"
-          [tiposDatosPermitidosTexto]="'JPG,JPEG,PDF'"
-          [requerido]="false"
-          style="width: 100%"
-        ></app-file-input>
+    <!-- Inicio campo Formato Solicitud-->
+    <div class="row ml-1 mr-1">
+      <div class="col-md-4">
+        <div class="input-group mt-3 mb-3">
+          <label for="input-simple-govco">Formato de solicitud </label>
+          <!--En Bytes se envia el tamaño del archivo-->
+          <app-file-input (change)="FileRequest($event)"
+            #archivoAdjuntoFoto
+            [pesoPermitido]="1048576"
+            [dimensionesPermitidasAncho]="0"
+            [dimensionesPermitidasAlto]="0"
+            [tiposDatosPermitidos]="[
+              'image/jpeg',
+              'image/jpg',
+              'application/pdf'
+            ]"
+            [tiposDatosPermitidosTexto]="'JPG,JPEG,PDF'"
+            [requerido]="false"
+            style="width: 100%"
+          ></app-file-input>
+        </div>
+      </div>
+      <!-- Inicio campo Formato Documento-->
+      <div class="col-md-4">
+        <div class="input-group mt-3 mb-3">
+          <label for="input-simple-govco">Documento de identidad</label>
+          <!--En Bytes se envia el tamaño del archivo-->
+          <app-file-input (change)="FileDocument($event)"
+            #archivoAdjuntoFoto
+            [pesoPermitido]="1048576"
+            [dimensionesPermitidasAncho]="0"
+            [dimensionesPermitidasAlto]="0"
+            [tiposDatosPermitidos]="[
+              'image/jpeg',
+              'image/jpg',
+              'application/pdf'
+            ]"
+            [tiposDatosPermitidosTexto]="'JPG,JPEG,PDF'"
+            [requerido]="false"
+            style="width: 100%"
+          ></app-file-input>
+        </div>
+      </div>
+      <!-- Inicio campo Formato Planos-->
+      <div class="col-md-4">
+        <div class="input-group mt-3 mb-3">
+          <label for="input-simple-govco">Planos del predio </label>
+          <!--En Bytes se envia el tamaño del archivo-->
+          <app-file-input (change)="FilePlan($event)"
+            #archivoAdjuntoFoto
+            [pesoPermitido]="1048576"
+            [dimensionesPermitidasAncho]="0"
+            [dimensionesPermitidasAlto]="0"
+            [tiposDatosPermitidos]="[
+              'image/jpeg',
+              'image/jpg',
+              'application/pdf'
+            ]"
+            [tiposDatosPermitidosTexto]="'JPG,JPEG,PDF'"
+            [requerido]="false"
+            style="width: 100%"
+            
+          ></app-file-input>
+        </div>
       </div>
     </div>
-    <!-- Fin campo Foto -->
+    
+    <!-- Fin campo Formulario -->
   </div>
   <div class="row mt-5">
     <div class="col-md-12">

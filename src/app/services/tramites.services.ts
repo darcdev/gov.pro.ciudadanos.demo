@@ -29,4 +29,20 @@ export class TramitesService {
       responseType: 'text',
     });
   }
+
+  guardarArchivo(file: File, numeroRadicado: string, nameVariable: string) {
+
+    const formdata = new FormData();
+    formdata.append('file', file);
+    
+    return this.httpClient.post(this.URL + 'variables/uploadfile/' + numeroRadicado + '/' + nameVariable, formdata).subscribe(
+      (response) => {
+        console.log(Response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
 }
