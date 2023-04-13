@@ -1,5 +1,5 @@
 const NOMBRE_TRAMITE:string ='Solicitud de licencia ambiental';
-const NOMBRE_ENTIDAD:string ='CORPOCOLOMBIA';
+const NOMBRE_ENTIDAD:string ='CORMACARENA';
 
 /*	-------------------------------------------	*\ 
 /*	DATOS AREA SERVICIO 
