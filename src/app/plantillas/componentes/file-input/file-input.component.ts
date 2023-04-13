@@ -5,17 +5,27 @@ import {
   OnInit,
   Output,
   ElementRef,
-  ViewChild,
-} from '@angular/core';
+  ViewChild
+} from "@angular/core";
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 
 @Component({
-  selector: 'app-file-input',
-  templateUrl: './file-input.component.html',
-  styleUrls: ['./file-input.component.css'],
+  selector: "app-file-input",
+  templateUrl: "./file-input.component.html",
+  styleUrls: ["./file-input.component.css"]
 })
 export class FileInputComponent implements OnInit {
-  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild("fileInput") fileInput: ElementRef;
 
+  constructor(private sanitizer: DomSanitizer) {}
+  radicateSubmited: boolean = false;
+  @Input()
+  set isSubmitted(isSubmited: any) {
+    console.log(isSubmited);
+    if (isSubmited) {
+      this.clearFileInput();
+    }
+  }
   @Input() pesoPermitido: any; //En B
   @Input() readonly: boolean; //En B
   @Input() dimensionesPermitidasAncho: any;
@@ -23,7 +33,7 @@ export class FileInputComponent implements OnInit {
   @Input() dimensionesPermitidasAlto: any;
   @Input() tiposDatosPermitidos: any;
   @Input() tiposDatosPermitidosTexto: any;
-  errorMessage: string = '';
+  errorMessage: string = "";
   error: boolean = false;
 
   public file: File | null = null;
@@ -31,9 +41,9 @@ export class FileInputComponent implements OnInit {
   public nameFileData: any;
   public sizeFileData: any;
   public downloadUrl: string;
+  public typeFile: string = "";
 
   ngOnInit() {}
-  constructor() {}
 
   validateFileSize() {
     if (this.file && this.pesoPermitido > 0)
@@ -52,45 +62,55 @@ export class FileInputComponent implements OnInit {
   }
 
   validarArchivo() {
-    this.errorMessage = '';
+    this.errorMessage = "";
     this.error = false;
 
     if (!this.fileData) {
       if (!this.file && this.requerido) {
-        this.errorMessage += '\n* ' + 'Requerido';
+        this.errorMessage += "\n* " + "Requerido";
         this.error = true;
         return;
       }
 
       if (!this.validateFileType()) {
         this.errorMessage +=
-          '\n* ' + 'Error tipo' + ' ' + this.tiposDatosPermitidosTexto;
+          "\n* " + "Error tipo" + " " + this.tiposDatosPermitidosTexto;
         this.error = true;
       }
 
       if (!this.validateFileSize()) {
-        this.errorMessage += '\n* ' + 'Error peso' + ' ' + this.convertSize();
+        this.errorMessage += "\n* " + "Error peso" + " " + this.convertSize();
         this.error = true;
       }
 
       if (!this.validateFileDimensions()) {
         this.errorMessage +=
-          '\n* ' +
-          'Error en dimensiones' +
-          ' ' +
+          "\n* " +
+          "Error en dimensiones" +
+          " " +
           this.dimensionesPermitidasAncho +
-          ' * ' +
+          " * " +
           this.dimensionesPermitidasAlto;
         this.error = true;
       }
     }
   }
-
+  openFile() {
+    const pdfWindow = window.open("", "Pdf viewer");
+    pdfWindow?.document.write(
+      "<embed width='100%' height='100%' src='data:application/pdf;base64," +
+        encodeURI(this.fileData.toString().split(",")[1]) +
+        "'></embed>"
+    );
+    pdfWindow?.document.close();
+  }
   onFileChange(event: any) {
     const reader = new FileReader();
     if (event.target.files && event.target.files.length) {
       const [file] = event.target.files;
       this.file = file;
+
+      this.typeFile = this.file?.type || "";
 
       this.validarArchivo();
 
@@ -100,12 +120,15 @@ export class FileInputComponent implements OnInit {
       }
       reader.readAsDataURL(file);
       reader.onload = () => {
-        this.downloadUrl = '';
-
+        this.downloadUrl = "";
         this.fileData = reader.result;
         this.nameFileData = file.name;
         this.sizeFileData = file.size;
-        this.errorMessage = '';
+        this.errorMessage = "";
+
+        if (this.file?.type === "application/pdf") {
+          this.downloadUrl = this.fileData;
+        }
       };
     }
   }
@@ -116,37 +139,37 @@ export class FileInputComponent implements OnInit {
   }
 
   clearFileInput() {
-    this.fileInput.nativeElement.value = '';
-    this.fileData = '';
+    this.fileInput.nativeElement.value = "";
+    this.fileData = "";
     this.file = null;
     this.validarArchivo();
   }
 
   convertSizeFunction(bytes: any, decimals: number) {
     if (bytes < 0) {
-      return 'Invalid value';
+      return "Invalid value";
     }
 
     const kilobytes = bytes / 1024;
     const megabytes = kilobytes / 1024;
     const gigabytes = megabytes / 1024;
 
-    let result = bytes + 'B';
+    let result = bytes + "B";
 
     if (kilobytes >= 1) {
-      result = kilobytes.toFixed(decimals) + ' KB';
+      result = kilobytes.toFixed(decimals) + " KB";
     }
 
     if (megabytes >= 1) {
-      result = megabytes.toFixed(decimals) + ' MB';
+      result = megabytes.toFixed(decimals) + " MB";
     }
 
     if (gigabytes >= 1) {
-      result = gigabytes.toFixed(decimals) + ' GB';
+      result = gigabytes.toFixed(decimals) + " GB";
     }
 
     if (bytes >= 1073741824) {
-      return 'Any size';
+      return "Any size";
     }
 
     return result;
