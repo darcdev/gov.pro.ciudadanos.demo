@@ -3,11 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 
-/*	-------------------------------------------	*\ 
-/*	COMPONENTES PROPIOS 
+/*	-------------------------------------------	*\
+/*	COMPONENTES PROPIOS
 /*	-------------------------------------------	*/
 import { HeaderComponent } from './plantillas/header/header.component';
 import { MigaPanComponent } from './plantillas/miga-pan/miga-pan.component';
@@ -19,14 +19,15 @@ import { EtapasComponent } from './plantillas/etapas/etapas.component';
 
 import { PortadaComponent } from './paginas/portada/portada.component';
 
-/*	-------------------------------------------	*\ 
-/*	PIPES 
+/*	-------------------------------------------	*\
+/*	PIPES
 /*	-------------------------------------------	*/
 
 import { cortarCaracteresthPipe } from './pipes/cortar-caracteres.pipe';
 import { ConsultarComponent } from './paginas/consultar/consultar.component';
 import { RadicarComponent } from './paginas/radicar/radicar.component';
 import { FileInputComponent } from './plantillas/componentes/file-input/file-input.component';
+import {TokenInterceptor} from "./token.interceptor";
 
 @NgModule({
   declarations: [
@@ -51,7 +52,9 @@ import { FileInputComponent } from './plantillas/componentes/file-input/file-inp
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

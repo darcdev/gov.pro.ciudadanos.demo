@@ -37,25 +37,30 @@ export class RadicarComponent implements OnInit {
   //capure the file
   FileDocument(event: any) {
     const file = event.target.files[0];
-    this.files.push(file);
+    this.files[0] = file;
   }
   FileRequest(event: any) {
     const file = event.target.files[0];
-    this.files.push(file);
+    this.files[1] = file;
   }
   FilePlan(event: any) {
     const file = event.target.files[0];
-    this.files.push(file);
+    this.files[2] = file;
   }
   //end capture the file
 
-  onSubmit() {
+  async onSubmit() {
+
     if (this.formGroup.invalid) {
       this.formGroup.markAllAsTouched();
       return;
     }
 
     this.isSubmited = true;
+
+    const file1base64 = await this.convertFileToBase64(this.files[0]);
+    const file2base64 = await this.convertFileToBase64(this.files[1]);
+    const file3base64 = await this.convertFileToBase64(this.files[2]);
 
     let body: any = {
       variables: {
@@ -82,35 +87,45 @@ export class RadicarComponent implements OnInit {
         fecha_solicitud: {
           value: this.formGroup.get("fecha_solicitud")?.value,
           type: "string"
+        },
+        solicitud : {
+          value : file1base64,
+          type : 'File',
+          valueInfo: {
+            filename:  this.files[1].name,
+            mimetype: "application/octet-stream",
+            encoding: "UTF-8"
+          }
+        },
+        documento : {
+          value : file2base64,
+          type : 'File',
+          valueInfo: {
+            filename:  this.files[0].name,
+            mimetype: "application/octet-stream",
+            encoding: "UTF-8"
+          }
+        },
+        plan : {
+          value : file3base64,
+          type : 'File',
+          valueInfo: {
+            filename: this.files[2].name,
+            mimetype: "application/octet-stream",
+            encoding: "UTF-8"
+          }
         }
       }
     };
-
+    console.log(body)
     this.loading = true;
     this.httpService.guardarDatos(body).subscribe(
-      data => {
-        console.log(data);
+      (data: any) => {
         this.etapa = 3;
-        this.estadoTramite = data;
+        this.estadoTramite = data.id;
         this.resultado = true;
         this.loading = false;
         this.formGroup.reset();
-
-        this.httpService.guardarArchivo(
-          this.files[0],
-          this.estadoTramite,
-          "solicitud"
-        );
-        this.httpService.guardarArchivo(
-          this.files[1],
-          this.estadoTramite,
-          "documento"
-        );
-        this.httpService.guardarArchivo(
-          this.files[2],
-          this.estadoTramite,
-          "plan"
-        );
       },
       error => {
         console.log(error);
@@ -119,10 +134,26 @@ export class RadicarComponent implements OnInit {
         this.resultado = false;
         this.error = true;
         console.log(error);
-        this.estadoError = "Ocurrió un error:" + error?.message;
+        this.estadoError = "Ocurrió un error al radicar el trámite";
       }
     );
   }
 
+  async convertFileToBase64(file : any) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onload = function () {
+        const base64String = (reader.result as any).toString().split(",")[1]
+        resolve(base64String);
+      };
+
+      reader.onerror = function (error) {
+        console.log('Error: ', error);
+        reject(error);
+      };
+    });
+  }
   async getReportData() {}
 }

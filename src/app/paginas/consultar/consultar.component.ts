@@ -46,19 +46,16 @@ export class ConsultarComponent implements OnInit {
     this.httpService
       .getDatos(this.formGroup.get('numero_radicado')?.value)
       .subscribe(
-        (data) => {
-          const resultado = data.split(',');
-          if (resultado[1] === 'null') {
+        (data: any) => {
+          if (data.state === 'ACTIVE') {
             this.etapa = 3;
             this.estadoTramite =
               "Su trámite se encuentra en proceso aún, en el estado de '" +
-              resultado[0] +
+              data.activityName +
               "'";
-          } else {
+          } else if (data.state === 'COMPLETED') {
             this.etapa = 4;
-            this.estadoTramite =
-              "Su trámite ya tiene una respuesta que puede encontrar en el siguiente enlace: " ;
-            this.rutaPDF = resultado[1];
+            this.estadoTramite = data.message
           }
 
           this.resultado = true;

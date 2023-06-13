@@ -355,8 +355,8 @@ footer .linea-blanca {
 	padding-bottom: 11px;
 	padding-right: 0px;
 	padding-left: 0px;
-}
 
+}
 /************************** BARRA DE PASOS ***************************/
 .bg-color-barra {
 	background-color: #E8E8E8;
@@ -727,7 +727,7 @@ padding: 16px;
 	text-align: left;
 font: normal normal normal 16px/9px Work Sans;
 letter-spacing: 0px;
-color: #004884;	
+color: #004884;
 
 }
 .archivo-cargado i{
@@ -746,7 +746,7 @@ color: #004884;
 	color: #A80521;
 }
 
-.form-control.is-invalid ~.borde-archivo, .was-validated .form-control:invalid 
+.form-control.is-invalid ~.borde-archivo, .was-validated .form-control:invalid
 	 ~.borde-archivo {
 	border: 2px dashed #A80521;
 }

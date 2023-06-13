@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
@@ -9,14 +10,12 @@ import { Injectable } from '@angular/core';
  * Service to make HTTP calls
  */
 export class TramitesService {
-  URL = 'https://localhost:7030/api/';
+  URL = environment.apiUrl;
 
   constructor(private httpClient: HttpClient) {}
 
   getDatos(numeroRadicado: string) {
-    return this.httpClient.get(this.URL + 'ProcessStatus/' + numeroRadicado, {
-      responseType: 'text',
-    });
+    return this.httpClient.get(this.URL + '/ProcessStatus/' + numeroRadicado);
   }
 
   guardarDatos(body: any) {
@@ -25,16 +24,14 @@ export class TramitesService {
       'text/plain; charset=utf-8'
     );
 
-    return this.httpClient.post(this.URL + 'StartProcess/', body, {      
-      responseType: 'text',
-    });
+    return this.httpClient.post(this.URL + '/StartInstancedProcess/TramiteGov', body)
   }
 
   guardarArchivo(file: File, numeroRadicado: string, nameVariable: string) {
 
     const formdata = new FormData();
     formdata.append('file', file);
-    
+
     return this.httpClient.post(this.URL + 'variables/uploadfile/' + numeroRadicado + '/' + nameVariable, formdata).subscribe(
       (response) => {
         console.log(Response);
