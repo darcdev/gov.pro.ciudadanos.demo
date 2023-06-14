@@ -55,7 +55,8 @@ export class ConsultarComponent implements OnInit {
               "'";
           } else if (data.state === 'COMPLETED') {
             this.etapa = 4;
-            this.estadoTramite = data.message
+            this.estadoTramite = 'El proceso ha culminado exitosamente'
+            this.rutaPDF = data.message
           }
 
           this.resultado = true;

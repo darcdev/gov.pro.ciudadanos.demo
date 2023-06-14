@@ -20,9 +20,9 @@
                     data-live-search="true"
                     formControlName="tipo_documento"
                 >
-                    <option value="ti">Tarjeta de identidad</option>
-                    <option value="cc">Cédula</option>
-                    <option value="nit">Nit</option>
+                    <option value="TI">Tarjeta de identidad</option>
+                    <option value="CC">Cédula</option>
+                    <option value="NIT">Nit</option>
                 </select>
                 <div
                     *ngIf="
@@ -40,7 +40,7 @@
                 <label for="input-simple-govco">Número de identificación*</label>
                 <input
                     name
-                    type="text"
+                    type="number"
                     maxlength="40"
                     placeholder="Ej: 102039049"
                     formControlName="numero_identificacion"
@@ -97,7 +97,27 @@
                 </div>
             </div>
         </div>
-
+      <div class="col-md-6">
+        <div class="form-group govco">
+          <label for="input-simple-govco">Correo*</label>
+          <input
+            name
+            type="email"
+            maxlength="40"
+            placeholder="Ej: usuario@email.com"
+            formControlName="email"
+          >
+          <div
+            *ngIf="
+            formGroup.get('email')?.invalid &&
+            formGroup.get('email')?.touched
+          "
+            class="text-danger"
+          >
+            Correo es requerido.
+          </div>
+        </div>
+      </div>
         <div class="col-md-6">
             <div class="form-group govco">
                 <label for="input-simple-govco">Tipo de licencia*</label>
@@ -107,9 +127,9 @@
                     data-live-search="true"
                     formControlName="tipo_licencia"
                 >
-                    <option value="ambiental">Licencia ambiental</option>
-                    <option value="forestal">Licencia de aprovechamiento forestal</option>
-                    <option value="vertimientos">Licencia de vertimientos</option>
+                    <option value="Ambiental">Licencia ambiental</option>
+                    <option value="Forestal">Licencia de aprovechamiento forestal</option>
+                    <option value="Vertimientos">Licencia de vertimientos</option>
                 </select>
                 <div
                     *ngIf="

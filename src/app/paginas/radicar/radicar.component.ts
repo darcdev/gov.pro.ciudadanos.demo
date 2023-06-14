@@ -23,6 +23,7 @@ export class RadicarComponent implements OnInit {
 
   constructor(public httpService: TramitesService, private fb: FormBuilder) {
     this.formGroup = this.fb.group({
+      email: ["", [Validators.required]],
       tipo_documento: ["", [Validators.required]],
       numero_identificacion: ["", [Validators.required]],
       nombre: ["", [Validators.required]],
@@ -74,6 +75,10 @@ export class RadicarComponent implements OnInit {
         },
         nombre: {
           value: this.formGroup.get("nombre")?.value,
+          type: "string"
+        },
+        email: {
+          value: this.formGroup.get("email")?.value,
           type: "string"
         },
         apellido: {
